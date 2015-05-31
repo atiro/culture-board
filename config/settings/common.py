@@ -44,6 +44,8 @@ THIRD_PARTY_APPS = (
 # Apps specific for this project go here.
 LOCAL_APPS = (
     'cultureboard.users',  # custom users app
+    'common',
+    'visitors',
     # Your stuff: custom apps go here
 )
 
@@ -99,7 +101,7 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default': env.db("DATABASE_URL", default="postgres://localhost/cultureboard"),
+    'default': env.db("DATABASE_URL", default="mysql://USER:PASS@192.168.1.69/cultureboard"),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 
