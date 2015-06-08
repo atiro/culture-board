@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% load visitors_extras %}
+
+{% block title %}Monthly Visitors{% endblock %}
+
+{% block content %}
+
+<ul>
+{% for visit in visits %}
+	<li>{{visit.month|month_name}} - {{visit.visitors}}</li>
+{% endfor %}
+</ul>
+	
+{% endblock content %}

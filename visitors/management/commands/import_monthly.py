@@ -2,23 +2,24 @@ import csv
 import os
 
 from django.core.management.base import BaseCommand, CommandError
+from django.db.models import Sum
 
 from visitors.models import Annual, Monthly
 from common.models import Organisation
 
 month_map = {
-	'January': 0,
-	'February': 1,
-	'March': 2,
-	'April': 3,
-	'May': 4,
-	'June': 5,
-	'July': 6,
-	'August': 7,
-	'September': 8,
-	'October': 9,
-	'November': 10,
-	'December': 11
+	'January': 1,
+	'February': 2,
+	'March': 3,
+	'April': 4,
+	'May': 5,
+	'June': 6,
+	'July': 7,
+	'August': 8,
+	'September': 9,
+	'October': 10,
+	'November': 11,
+	'December': 12
 }
 
 
@@ -43,30 +44,30 @@ class Command(BaseCommand):
 			   headers = statsreader.next()
 			   organisation = headers.pop(0)
 			   org, status = Organisation.objects.get_or_create(name=organisation)
+			   real_years = []
+
 			   for year in headers:
-				real_year = year.split('/')[0]
+				real_years.append(year.split('/')[0])
 		
 			   for statsline in statsreader:
 				month_string = statsline.pop(0)
 				month = month_map[month_string]
-				for stats in statsline:
+				for index, stats in enumerate(statsline):
 				  print "Saving " + stats + " for month: " + str(month)
-				  monthly = Monthly(year = real_year, month = month, visitors=stats.replace(',', ''), organisation=org)
+				  monthly = Monthly(year = real_years[index], month = month, visitors=stats.replace(',', ''), organisation=org)
 				  monthly.save()
 				  print "Created monthly object"
 			
 
 			# Sum up annual
 
-		for org in Monthly.objects.group_by_org
-		  for month in org.group_by_year
-			sum  += month.visitors
+		  for org in Organisation.objects.all():
+		    annual_visits = Monthly.objects.filter(organisation=org).values('year').annotate(visitors=Sum('visitors'))
+		    for annual in annual_visits:
+			print "Saving annual visits for year " + str(annual['year'])
+			year = Annual(organisation=org, year=annual['year'], visitors=annual['visitors'])
+			year.save()
 
-			annual, status =Annual.objects.get_or_create(organisation=org, year= year, visitors=sum)
-
-			annual.save()
+			# Sum up total for each org
 			
-# sum monthly for annual
-
-	
 

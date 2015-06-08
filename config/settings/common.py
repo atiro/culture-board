@@ -101,7 +101,9 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    'default': env.db("DATABASE_URL", default="mysql://USER:PASS@192.168.1.69/cultureboard"),
+    #'default': env.db("DATABASE_URL", default="mysql://USER:PASS@192.168.1.69/cultureboard"),
+    'default': { 'ENGINE': 'django.db.backends.sqlite3', 'NAME': 'cultureboar.db' }
+    #'default': env.db("DATABASE_URL", default="sqlite3://cultureboard.db"),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 

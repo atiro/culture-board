@@ -19,6 +19,8 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
 
     # Your stuff: custom urls includes go here
+    url(r'^common/', include('common.urls')),
+    url(r'^visitors/', include('visitors.urls')),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
